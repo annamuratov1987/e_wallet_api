@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:14.0-alpine
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=abc123
+      - POSTGRES_USER=root
+      - POSTGRES_DB=e-wallet-db
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+      - ./scripts/postgresql:/docker-entrypoint-initdb.d
+    networks:
+      - api
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    links:
+      - db
+    networks:
+      - api
+  ewallet_api:
+    build:
+      context: .
+      dockerfile: ./build/Docker/Dockerfile.ewallet_api
+    environment:
+      - PORT=8001
+    networks:
+        - api
+    ports:
+    - "8001:8001"
+volumes:
+  db-data:
+    driver: local
+networks:
+  api:
