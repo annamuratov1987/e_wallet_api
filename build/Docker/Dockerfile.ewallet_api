@@ -5,7 +5,8 @@ WORKDIR /go/src/github.com/annamuratov1987/e_wallet_api
 COPY . .
 
 # init dependencies
-RUN go mod init
+COPY go.mod .
+COPY go.sum .
 
 # build
 RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o e_wallet_api ./cmd/e_wallet_api/main.go
