@@ -6,6 +6,7 @@ import (
 )
 
 func main()  {
+	fmt.Println("ISHLADI!")
 	app := fiber.New()
 
 	app.Get("/", func(c *fiber.Ctx) error {
